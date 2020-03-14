@@ -2,10 +2,14 @@ package com.songyinglong.pervue.mapper;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.songyinglong.pervue.entity.Menu;
 import com.songyinglong.pervue.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.songyinglong.pervue.entity.UserVO;
+import com.songyinglong.pervue.vo.MenuVO;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -24,4 +28,7 @@ public interface UserMapper extends BaseMapper<User> {
      * @return
      */
     IPage<User> selectPageVo(Page<?> page,@Param("userVo") UserVO userVO);
+
+
+    List<Menu> selectMenusByIds(@Param("id") Integer id);
 }

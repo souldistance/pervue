@@ -1,7 +1,11 @@
 package com.songyinglong.pervue.mapper;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.songyinglong.pervue.entity.Role;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.songyinglong.pervue.vo.RoleVO;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -13,4 +17,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface RoleMapper extends BaseMapper<Role> {
 
+    IPage<RoleVO> selectPageVo(Page<RoleVO> page, @Param("vo") RoleVO role);
 }

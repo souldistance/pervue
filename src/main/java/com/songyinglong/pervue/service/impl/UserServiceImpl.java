@@ -2,14 +2,17 @@ package com.songyinglong.pervue.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.songyinglong.pervue.entity.Menu;
 import com.songyinglong.pervue.entity.User;
 import com.songyinglong.pervue.entity.UserVO;
 import com.songyinglong.pervue.mapper.UserMapper;
 import com.songyinglong.pervue.service.IUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.songyinglong.pervue.vo.MenuVO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -27,6 +30,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public IPage<User> selectPageVo(Page<?> page, UserVO userVo) {
+
         return userMapper.selectPageVo(page,userVo);
     }
+
+    @Override
+    public List<Menu> selectMenusByIds(Integer id) {
+        return userMapper.selectMenusByIds(id);
+    }
+
 }

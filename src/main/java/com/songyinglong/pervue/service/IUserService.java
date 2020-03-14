@@ -2,9 +2,13 @@ package com.songyinglong.pervue.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.songyinglong.pervue.entity.Menu;
 import com.songyinglong.pervue.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.songyinglong.pervue.entity.UserVO;
+import com.songyinglong.pervue.vo.MenuVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -23,4 +27,6 @@ public interface IUserService extends IService<User> {
      * @return
      */
     IPage<User> selectPageVo(Page<?> page, UserVO userVo);
+
+    List<Menu> selectMenusByIds(Integer id);
 }

@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IMenuRoleService extends IService<MenuRole> {
 
+    void insertBatch(Integer rid, Integer[] mids);
 }

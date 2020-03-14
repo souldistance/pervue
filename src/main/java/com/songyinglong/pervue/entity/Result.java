@@ -36,6 +36,6 @@ public class Result {
     }
 
     public static Result ok(Object result){
-        return new Result("success",10001,result);
+        return new Result("success",1001,result);
     }
 }

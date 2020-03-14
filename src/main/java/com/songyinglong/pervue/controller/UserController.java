@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 
 /**
@@ -26,7 +28,6 @@ import java.util.Arrays;
  * @author songyinglong
  * @since 2020-03-03
  */
-@Controller
 @RestController
 public class UserController {
 
@@ -57,4 +58,38 @@ public class UserController {
         //boolean result=iUserService.save(user);
         return Result.ok(result);
     }
+
+    @RequestMapping("/selectMenusByIds")
+    public Result selectMenusByIds(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        if(user==null){
+            return Result.error(2003, "请先登录!");
+        }
+        return Result.ok(iUserService.selectMenusByIds(user.getId()));
+    }
+
+    @RequestMapping("/login")
+    public Result login(@RequestBody User u, HttpServletRequest request){
+        System.out.println(u);
+        QueryWrapper wrapper=new QueryWrapper();
+        wrapper.eq("username", u.getUsername());
+        User user = iUserService.getOne(wrapper);
+        System.out.println(user);
+        if( user.getPassword().equals(u.getPassword())){
+            HttpSession session = request.getSession();
+            session.setAttribute("user",user);
+            return Result.ok(user);
+        }else{
+            return Result.error(2002, "用户名或密码错误");
+        }
+    }
+
+    @RequestMapping("/logout")
+    public Result logout( HttpServletRequest request){
+            HttpSession session = request.getSession();
+            session.invalidate();
+            return Result.ok(true);
+    }
+
 }

@@ -1,7 +1,10 @@
 package com.songyinglong.pervue.mapper;
 
+import com.songyinglong.pervue.entity.Goods;
 import com.songyinglong.pervue.entity.Order;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface OrderMapper extends BaseMapper<Order> {
 
+    List<Order> selectVO(Order order);
+
+    List<Goods> selectGoods(Integer id);
 }

@@ -15,6 +15,16 @@
         <result column="parentId" property="parentId" />
         <result column="enabled" property="enabled" />
         <result column="create_time" property="createTime" />
+        <!--扩展子菜单-->
+        <collection property="menus" ofType="com.songyinglong.pervue.entity.Menu">
+            <!--别名字段column是我们自己手写-->
+            <id column="id1" property="id" />
+            <result column="url1" property="url" />
+            <result column="path1" property="path" />
+            <result column="component1" property="component" />
+            <result column="name1" property="name" />
+        </collection>
+
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -22,4 +32,9 @@
         id, url, path, component, name, iconCls, keepAlive, requireAuth, parentId, enabled, create_time
     </sql>
 
+    <select id="listMenus" resultMap="BaseResultMap">
+select m1.*,m2.id id1,m2.url url1,m2.path path1,m2.component
+component1,m2.`name` name1 from menu m1 LEFT JOIN menu m2 on m1.id=m2.parentId
+where m1.parentId=1
+</select>
 </mapper>

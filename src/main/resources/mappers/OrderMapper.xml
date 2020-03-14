@@ -16,5 +16,17 @@
     <sql id="Base_Column_List">
         id, order_sn, user_id, total_price, status, created
     </sql>
+    <!--订单查询,与商品多对多-->
+    <resultMap id="voMap" type="com.songyinglong.pervue.entity.Order" extends="BaseResultMap">
+        <collection property="goods" select="com.songyinglong.pervue.mapper.OrderMapper.selectGoods"  column="id"></collection>
+    </resultMap>
+    <!--订单查询,与商品多对多-->
+    <select id="selectVO" resultMap="voMap">
+        select * from t_order
+    </select>
+    <!--订单查询,与商品多对多,子查询,查询订单里的商品-->
+    <select id="selectGoods" resultType="com.songyinglong.pervue.entity.Goods">
+         select g.* from t_order_item i LEFT JOIN t_goods g  on i.gid=g.id where i.oid=#{id}
+    </select>
 
 </mapper>

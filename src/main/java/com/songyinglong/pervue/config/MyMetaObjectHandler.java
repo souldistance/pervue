@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * 自定义填充控制器
@@ -31,8 +32,10 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
         // 看实体类中是否有这个属性，有的话就执行。没有就不执行
         boolean hasSetter = metaObject.hasSetter("gmtCreate");
         if (hasSetter) {
-            this.strictInsertFill(metaObject, "gmtCreate", LocalDateTime.class, LocalDateTime.now());
+            this.strictInsertFill(metaObject, "created", LocalDateTime.class, LocalDateTime.now());
         }
+        //this.strictInsertFill(metaObject, "created", LocalDateTime.class, LocalDateTime.now());
+        this.setFieldValByName("created",new Date(),metaObject);
         //根据属性名字设置要填充的值
         /*this.setFieldValByName("created", new Date(), metaObject);
         this.setFieldValByName("updateTime",new Date(),metaObject);*/
