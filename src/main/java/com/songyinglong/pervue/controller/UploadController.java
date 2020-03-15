@@ -7,6 +7,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 @RestController
@@ -20,9 +22,14 @@ public class UploadController {
             String fileOriginalFilename = file.getOriginalFilename();
             //拼接一个新名称
             String fileName = UUID.randomUUID()+"_"+fileOriginalFilename;
+
+            String date = new SimpleDateFormat("yyyyMMdd").format(new Date());
+            fileName = date + "/" + fileName;
             //保存的文件地址
             File destFile = new File("D:\\pic",fileName);
-
+            if (!destFile.getParentFile().exists()) {
+                destFile.getParentFile().mkdirs();
+            }
             try {
                 //执行保存
                 file.transferTo(destFile);
