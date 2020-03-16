@@ -1,125 +1,124 @@
 server:
   port: 80
-#\u914D\u7F6E\u8BBF\u95EE\u9879\u76EE\u8DEF\u5F84
-  #servlet:
-    #context-path: /bookdemo
-  #\u89E3\u51B3\u4E2D\u6587\u4E71\u7801
+    #配置访问项目路径
+    #servlet:
+  #context-path: /bookdemo
+  #解决中文乱码
   tomcat:
     uri-encoding: UTF-8
 
 #spring
 spring:
   #profiles:
-    #active: hikaricp
+  #active: hikaricp
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    #\u8FDE\u63A5\u7C7B\u578B druid type: com.alibaba.druid.pool.DruidDataSource
-    #c3p0 \u6570\u636E\u6E90 type: com.mchange.v2.c3p0.ComboPooledDataSource
-    #DBCP \u6570\u636E\u6E90 type: org.apache.commons.dbcp2.BasicDataSource
-    #bonecp \u6570\u636E\u6E90 type: com.jolbox.bonecp.BoneCPDataSource
+    #连接类型 druid type: com.alibaba.druid.pool.DruidDataSource
+    #c3p0 数据源 type: com.mchange.v2.c3p0.ComboPooledDataSource
+    #DBCP 数据源 type: org.apache.commons.dbcp2.BasicDataSource
+    #bonecp 数据源 type: com.jolbox.bonecp.BoneCPDataSource
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:mysql://localhost:3306/kylin?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=Hongkong
     username: root
     password: root
-  #freemarker\u6A21\u677F\u5F15\u64CE
+  #freemarker模板引擎
   freemarker:
-    #\u52A0\u8F7D\u7684\u8DEF\u5F84 \u9ED8\u8BA4\u8DEF\u5F84classpath:/templates/
+    #加载的路径 默认路径classpath:/templates/
     template-loader-path: classpath:/templates/
-    #\u6A21\u677F\u52A0\u8F7D\u7684\u540E\u7F00 \u9ED8\u8BA4\u540E\u7F00 .ftlh
+    #模板加载的后缀 默认后缀 .ftlh
     suffix: .ftlh
-    #\u9875\u9762\u52A0\u8F7D\u7F13\u5B58 \u9ED8\u8BA4false
+    #页面加载缓存 默认false
     cache: false
-  #\u8BBE\u7F6E\u5F00\u542F\u70ED\u90E8\u7F72
+  #设置开启热部署
   devtools:
     restart:
       enabled: true
-#kafka\u914D\u7F6E
+  #kafka配置
   kafka:
     bootstrap-servers: 192.168.131.130:9092
     #=============== provider  =======================
-    # \u5199\u5165\u5931\u8D25\u65F6\uFF0C\u91CD\u8BD5\u6B21\u6570\u3002\u5F53leader\u8282\u70B9\u5931\u6548\uFF0C\u4E00\u4E2Arepli\u8282\u70B9\u4F1A\u66FF\u4EE3\u6210\u4E3Aleader\u8282\u70B9\uFF0C\u6B64\u65F6\u53EF\u80FD\u51FA\u73B0\u5199\u5165\u5931\u8D25\uFF0C
-    # \u5F53retris\u4E3A0\u65F6\uFF0Cproduce\u4E0D\u4F1A\u91CD\u590D\u3002retirs\u91CD\u53D1\uFF0C\u6B64\u65F6repli\u8282\u70B9\u5B8C\u5168\u6210\u4E3Aleader\u8282\u70B9\uFF0C\u4E0D\u4F1A\u4EA7\u751F\u6D88\u606F\u4E22\u5931\u3002
+    # 写入失败时，重试次数。当leader节点失效，一个repli节点会替代成为leader节点，此时可能出现写入失败，
+    # 当retris为0时，produce不会重复。retirs重发，此时repli节点完全成为leader节点，不会产生消息丢失。
     producer:
       retries: 0
-      # \u6BCF\u6B21\u6279\u91CF\u53D1\u9001\u6D88\u606F\u7684\u6570\u91CF,produce\u79EF\u7D2F\u5230\u4E00\u5B9A\u6570\u636E\uFF0C\u4E00\u6B21\u53D1\u9001
+      # 每次批量发送消息的数量,produce积累到一定数据，一次发送
       batch-size: 16384
-      # produce\u79EF\u7D2F\u6570\u636E\u4E00\u6B21\u53D1\u9001\uFF0C\u7F13\u5B58\u5927\u5C0F\u8FBE\u5230buffer.memory\u5C31\u53D1\u9001\u6570\u636E
+      # produce积累数据一次发送，缓存大小达到buffer.memory就发送数据
       buffer-memory: 33554432
-      # \u6307\u5B9A\u6D88\u606Fkey\u548Cvalue\u7684\u5E8F\u5217\u5316\u65B9\u5F0F
+      # 指定消息key和value的序列化方式
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
     #=============== consumer  =======================
-    # \u6307\u5B9A\u9ED8\u8BA4\u6D88\u8D39\u8005group id --> \u7531\u4E8E\u5728kafka\u4E2D\uFF0C\u540C\u4E00\u7EC4\u4E2D\u7684consumer\u4E0D\u4F1A\u8BFB\u53D6\u5230\u540C\u4E00\u4E2A\u6D88\u606F\uFF0C\u4F9D\u9760groud.id\u8BBE\u7F6E\u7EC4\u540D
+    # 指定默认消费者group id --> 由于在kafka中，同一组中的consumer不会读取到同一个消息，依靠groud.id设置组名
     consumer:
       group-id: consumer_group
-      # enable.auto.commit:true --> \u8BBE\u7F6E\u81EA\u52A8\u63D0\u4EA4offset
+      # enable.auto.commit:true --> 设置自动提交offset
       enable-auto-commit: true
-      #\u5982\u679C'enable.auto.commit'\u4E3Atrue\uFF0C\u5219\u6D88\u8D39\u8005\u504F\u79FB\u81EA\u52A8\u63D0\u4EA4\u7ED9Kafka\u7684\u9891\u7387\uFF08\u4EE5\u6BEB\u79D2\u4E3A\u5355\u4F4D\uFF09\uFF0C\u9ED8\u8BA4\u503C\u4E3A5000\u3002
+      #如果'enable.auto.commit'为true，则消费者偏移自动提交给Kafka的频率（以毫秒为单位），默认值为5000。
       auto-commit-interval: 1000
-      # \u6307\u5B9A\u6D88\u606Fkey\u548C\u6D88\u606F\u4F53\u7684\u53CD\u5E8F\u5217\u5316\u65B9\u5F0F
-#redis\u914D\u7F6E
+      # 指定消息key和消息体的反序列化方式
+  #redis配置
   redis:
-    ##\u8FDE\u63A5\u7684\u7B2C\u51E0\u4E2A\u6570\u636E\u5E93
+    ##连接的第几个数据库
     database: 0
-    #\u8FDE\u63A5\u4E3B\u673A\u7684\u5730\u5740
+    #连接主机的地址
     host: 127.0.0.1
-    #redis\u7684\u7AEF\u53E3\u53F7
+    #redis的端口号
     port: 6379
-  #\u7F13\u5B58\u7684\u7C7B\u578B\uFF0C\u5B98\u65B9\u63D0\u4F9B\u4E86\u5F88\u591A\uFF0C\u8FD9\u91CC\u6211\u4EEC\u586B\u5199redis
+  #缓存的类型，官方提供了很多，这里我们填写redis
   cache:
     type: redis
-  #\u89E3\u51B3\u4E2D\u6587\u4E71\u7801
+  #解决中文乱码
   http:
     encoding:
       charset: UTF-8
       enabled: true
       force: true
   servlet:
-    #\u4E0A\u4F20\u914D\u7F6E
+    #上传配置
     multipart:
-      #\u5355\u4E2A\u6587\u4EF6\u4E0A\u4F20\u7684\u5927\u5C0F\u9650\u5236
+      #单个文件上传的大小限制
       max-file-size: 10MB
-      #\u4E00\u6B21\u8BF7\u6C42\u9650\u5236\u5927\u5C0F
+      #一次请求限制大小
       max-request-size: 100MB
   mvc:
-    # \u9759\u6001\u6587\u4EF6\u8BF7\u6C42\u5339\u914D\u65B9\u5F0F
+    # 静态文件请求匹配方式
     static-path-pattern: /**
   resources:
-    # \u4FEE\u6539\u9ED8\u8BA4\u7684\u9759\u6001\u5BFB\u5740\u8D44\u6E90\u76EE\u5F55 \u591A\u4E2A\u4F7F\u7528\u9017\u53F7\u5206\u9694,\u4E0B\u8FB9\u7684\u662F\u9ED8\u8BA4\u503C,\u9664\u4E86/pic/
+    # 修改默认的静态寻址资源目录 多个使用逗号分隔,下边的是默认值,除了/pic/
     static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,classpath:/pic/
 
 
 #mybatis
 mybatis-plus:
-  #\u52A0\u8F7Dmapper\u6620\u5C04\u6587\u4EF6
+  #加载mapper映射文件
   mapper-locations: classpath:mappers/*.xml
-  #\u522B\u540D\u8BBE\u7F6E
+  #别名设置
   type-aliases-package: com.songyinglong.pervue.entity
-  #\u914D\u7F6Etype-enums-package\u53EA\u5BF9\u6CE8\u89E3\u65B9\u5F0F\u7684\u679A\u4E3E\u5904\u7406\u80FD\u63D0\u524D\u52A0\u8F7D\u7F13\u5B58 (\u6682\u4E0D\u9700\u8981\u5F00\u542F...)
+  #配置type-enums-package只对注解方式的枚举处理能提前加载缓存 (暂不需要开启...)
   #typeEnumsPackage: com.songyinglong.bookdemo.entity
   global-config:
-    #\u5237\u65B0mapper \u8C03\u8BD5\u795E\u5668
+    #刷新mapper 调试神器
     refresh: true
     db-config:
-      #\u6570\u636E\u5E93\u4E2D\u7684\u4E0B\u5212\u7EBF\u8F6C\u6210\u9A7C\u5CF0\u6807\u5FD7 \u7528\u4E8EresultType\u81EA\u52A8\u6620\u5C04
+      #数据库中的下划线转成驼峰标志 用于resultType自动映射
       column-underline: true
-  #\u539F\u751F\u914D\u7F6E
+  #原生配置
   configuration:
-    #\u6570\u636E\u5E93\u50A8\u5B58\u81EA\u5B9A\u4E49\u6570\u636E\uFF08code,displayName\uFF09,\u4F7F\u7528\u6CE8\u89E3@EnumValue\u6807\u8BB0\u6570\u636E\u5E93\u8981\u5B58\u7684\u503C
+    #数据库储存自定义数据（code,displayName）,使用注解@EnumValue标记数据库要存的值
     #default-enum-type-handler: com.baomidou.mybatisplus.extension.handlers.MybatisEnumTypeHandler
-    #\u6570\u636E\u5E93\u5B58\u50A8\u679A\u4E3EName
+    #数据库存储枚举Name
     #default-enum-type-handler: org.apache.ibatis.type.EnumTypeHandler
-    #\u6570\u636E\u5E93\u5B58\u50A8\u679A\u4E3E\u5BF9\u8C61\u4E0B\u6807 \uFF08ordinal\uFF09
+    #数据库存储枚举对象下标 （ordinal）
     default-enum-type-handler: org.apache.ibatis.type.EnumOrdinalTypeHandler
-    #\u65E5\u5FD7\u8F93\u51FA
+    #日志输出
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
-#\u65E5\u5FD7\u914D\u7F6E
-#logging:
-  #level:
+    #日志配置
+    #logging:
+    #level:
     #root: warn
     #com.songyinglong.bookdemo: tracesha
-  #pattern:
+    #pattern:
     #console: '%p%m%n'
-

@@ -25,7 +25,7 @@
             <id property="value" column="cid"></id>
             <result property="label" column="city"></result>
 
-            <collection property="children" ofType="com.songyinglong.pervue.entity.NationVo">
+            <collection property="children" ofType="com.songyinglong.pervue.entity.NationVo" >
                 <id property="value" column="did"></id>
                 <result property="label" column="district"></result>
             </collection>
